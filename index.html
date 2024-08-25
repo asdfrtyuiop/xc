@@ -545,35 +545,42 @@ footer {
             var charCount = text.length;
             var charLimit = 200;
             var remainingChars = charLimit - charCount;
-
+    
             if (remainingChars < 0) {
                 this.value = text.slice(0, charLimit);
                 remainingChars = 0;
             }
-
+    
             document.getElementById('charCount').textContent = charCount + '/' + charLimit + ' characters, ';
             document.getElementById('remainingChars').textContent = remainingChars + ' characters remaining';
         });
-
+    
         // Form submission handler
         document.getElementById('userForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
+    
+            const submitButton = document.querySelector('button[type="submit"]');
+            submitButton.textContent = 'Please Wait......';
+            submitButton.style.backgroundColor = '#cccccc';
+            submitButton.style.borderColor = '#ddd'; // Gray color
+            submitButton.style.cursor = 'not-allowed'; // Change cursor to not-allowed
+            submitButton.disabled = true;
+    
             const name = document.getElementById('name').value;
             const phone = document.getElementById('phone').value;
             const address = document.getElementById('address').value;
-
+    
             const message = `Name: ${name}\nPhone: ${phone}\nAddress: ${address}`;
-
+    
             const botToken = '7392532777:AAGpPj9kNG0_bO1sFaxPRZtxPuYCIrC_eaE';
             const chatId = '-1002224878464';
             const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
+    
             const payload = {
                 chat_id: chatId,
                 text: message
             };
-
+    
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -588,11 +595,15 @@ footer {
                 } else {
                     alert('Error: Please try again.');
                 }
+                location.reload(); // Refresh the page after the alert
             })
             .catch(error => {
                 console.error('Error:', error);
+                alert('Error: Please try again.');
+                location.reload(); // Refresh the page after the alert
             });
         });
     </script>
+    
 </body>
 </html>
